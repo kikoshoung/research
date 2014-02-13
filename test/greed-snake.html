@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Greed Snake</title>
+</head>
+<body>
+	<canvas width="300" height="300" id="game-panel">Sorry, canvas is not supported.</canvas>
+	<script type="text/javascript" src="js/greed-snake.js"></script>
+	<script type="text/javascript">
+		var canvas = document.getElementById('game-panel');
+		var greedSnake = new GreedSnake({
+			canvas: canvas,
+			freq: 500,
+			t: '111'
+		});
+		// var greedSnake2 = new GreedSnake({
+		// 	t: '222'
+		// });
+	</script>
+</body>
+</html>
