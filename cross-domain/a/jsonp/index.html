@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	</head>
+	<body>
+		<script type="text/javascript">
+			var xhr = null;
+
+			function ajax(method, url, callback){
+				if(xhr) xhr.abort();
+				xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function(){
+					if(xhr.readyState == 4 && xhr.status == 200){
+						callback(xhr.responseText);
+					}
+				}
+				xhr.open(method, url);
+				xhr.send();
+			}
+
+			function jsonp(url){
+				var script = document.createElement('script');
+
+				script.type = 'text/javascript';
+				script.src = url;
+
+				document.body.appendChild(script);
+			}
+
+			function showUserInfo(data){
+				document.body.innerHTML = 'B站返回了如下数据<br/>'+ data;
+			}
+
+			// ajax('GET', 'http://b.com/jsonp/getUserInfo.php', function(res){
+			// 	console.log(typeof res);
+			// });
+
+			jsonp('http://b.com/jsonp/getUserInfo.php?callback=showUserInfo');
+
+
+			
+		</script>
+	</body>
+</html>

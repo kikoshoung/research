@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<style type="text/css">
+			ul{
+				list-style: none;
+			}
+			li{
+				padding-top: 5px;
+				color: gray;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<p>请选择书籍</p>
+		<ul id="book-list"></ul>
+		<p>购物车</p>
+		<ul id="cart"></ul>
+		<button id="back">回A站结算去</button>
+		<script type="text/javascript">
+			var books = [
+					{id: 0, name: '重口味心理学', price: '28.80'},
+					{id: 1, name: '精通HTML', price: '30.00'},
+					{id: 2, name: '精通深入理解计算机系统', price: '66.80'},
+					{id: 3, name: '定位', price: '32.80'},
+					{id: 4, name: '一个广告人的自白', price: '19.60'}
+				],
+				bookList = document.getElementById('book-list'),
+				cart = document.getElementById('cart'),
+				back = document.getElementById('back'),
+				selectedItems = {};
+
+			renderList();
+
+			bookList.addEventListener('click', function(e){
+				var target = e.target,
+					index = target.getAttribute('data-index'),
+					selected = ~~target.getAttribute('data-selected'),
+					selectedData; 
+
+				if(target.tagName == 'LI'){
+					if(!selected){
+						selectedData = books[index];
+					} else {
+						selectedData = null;
+					}
+					target.setAttribute('data-selected', selected ? 0 : 1);
+					selectedItems[books[index].id] = selectedData;
+				}
+
+				renderCart();
+			});
+
+			back.addEventListener('click', function(){
+				window.name = JSON.stringify(formatData(selectedItems));
+				location.href = 'http://a.com/name/index.html'
+			});
+
+			function renderList(){
+				var listStr = '';
+
+				for(var i = 0, len = books.length; i < len; i++){
+					listStr += '<li data-index='+ i +' data-selected='+ 0 +'>'+ books[i].name +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥'+ books[i].price +'</li>';
+				}
+				bookList.innerHTML = listStr;
+			}
+
+			function renderCart(){
+				var listStr = '';
+
+				for(var i in selectedItems){
+					if(!selectedItems[i]) continue;
+					listStr += '<li>'+ selectedItems[i].name +'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;￥' + selectedItems[i].price +'</li>';
+				}
+				cart.innerHTML = listStr;
+			}
+
+			function formatData(data){
+				var res = [];
+
+				for(var i in data){
+					if(data[i]) res.push(data[i])
+				}
+console.log(res)
+				return res;
+			}
+		</script>
+	</body>
+</html>
