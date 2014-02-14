@@ -39,6 +39,16 @@ function getArray(n){
 	console.log(eDate - sDate);
 })();
 
+// Odd-even sort
+(function(){
+	var arr = getArray(100000),
+		sDate, eDate;
+
+	function oddevenSort(arr){
+		
+	}
+})();
+
 // Quick sort
 (function(){
 	var arr = getArray(100000),

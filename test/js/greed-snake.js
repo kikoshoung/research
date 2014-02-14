@@ -2,10 +2,8 @@
 
 	var defaultConfig = {
 			freq: 42,
-			dir: 0,
-			length: 6,
-			corners: [],
-			gridSize: 10,
+			grids: null,
+			gridWidth: 10,
 			position: [0, 0]
 		},
 		dirs = [0, 1, 2, 3]; // top, right, bottom, left
@@ -21,8 +19,9 @@
 		
 		init: function(){
 			this.setConfig();
+			this.grids = this.generateGrid();
 			this.ctx = this.canvas.getContext('2d');
-			this.setSnake();
+			this.setFrame();
 			this.drawFrame();
 		},
 
@@ -41,7 +40,36 @@
 			console.log(this)
 		},
 
-		setSnake: function(){
+		generateGrid: function(){
+			var canvas = this.canvas,
+				gridSize = [Math.floor(canvas.width / this.gridWidth), Math.floor(canvas.height / this.gridWidth)],
+				res = [],
+				draw;
+
+			for(var j = 0, rows = gridSize[1]; j < rows; j++){
+				var singleRow = [];
+
+				for(var i = 0, cols = gridSize[0]; i < cols; i++){
+					draw = false;
+					if(j == Math.floor(gridSize[0] / 2)){
+						if(i <=  Math.floor(gridSize[1] / 2) && i >  Math.floor(gridSize[1] / 2) - 3){
+							draw = true;
+						}
+					}
+					singleRow.push({
+						draw: draw,
+						dir: -1,
+						pos: [i, j] // [x, y]
+					});
+				}
+
+				res.push(singleRow);
+			}
+
+			return res;
+		},
+
+		setFrame: function(){
 			var canvas = this.canvas,
 				position = [canvas.width / 2, canvas.height / 2];
 
@@ -70,39 +98,39 @@
 		drawSnake: function(){
 			var canvas = this.canvas,
 				ctx = this.ctx,
-				offset = this.gridSize,
+				offset = this.gridWidth,
 				position = this.position,
 				length = this.length,
-				corners = this.corners.slice(),
-				cornerlen = corners.length,
 				gap;
-console.log(position)
 
-			for(var i = 0, len = corners.length; i < len; i++){
-				switch(corners[i].dir){
-					case 0:
-						position[1] = position[1] + offset;
-						break;
-					case 1:
-						position[0] = position[0] + offset;
-						break;
-					case 2:
-						position[1] = position[1] - offset;
-						break;
-					case 3:
-						position[0] = position[0] - offset;
-						break;
-				}
-			ctx.lineTo(position[0], position[1]);
+			ctx.lineTo(position[0]+10, position[1]);
 
 
-			}
+			// for(var i = 0, len = corners.length; i < len; i++){
+			// 	switch(corners[i].dir){
+			// 		case 0:
+			// 			position[1] = position[1] + offset;
+			// 			break;
+			// 		case 1:
+			// 			position[0] = position[0] + offset;
+			// 			break;
+			// 		case 2:
+			// 			position[1] = position[1] - offset;
+			// 			break;
+			// 		case 3:
+			// 			position[0] = position[0] - offset;
+			// 			break;
+			// 	}
+			// ctx.lineTo(position[0], position[1]);
+
+
+			// }
 
 
 			
 			// ctx.lineTo((position[0] = position[0] + offset), (position[1] = position[1] + offset));
 			ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
-			ctx.lineWidth = this.gridSize; 
+			ctx.lineWidth = this.gridWidth; 
 			ctx.stroke();
 		},
 
